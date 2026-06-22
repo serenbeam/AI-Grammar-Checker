@@ -11,6 +11,10 @@ export const typography = {
     fontSize: 20,
     fontWeight: '600',
   },
+  h4: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
   bodyLarge: {
     fontSize: 18,
     fontWeight: '400',
