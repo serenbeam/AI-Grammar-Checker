@@ -1,20 +1,24 @@
+import { GrammarCheckReslut, GrammarTone } from '@/types';
 import { create } from 'zustand';
 export interface GrammarState {
   inputText: string;
-  result: string;
+  tone: GrammarTone;
+  result: GrammarCheckReslut | null;
   loading: boolean;
   error: string | null;
 
   setInputText: (text: string) => void;
-  setResult: (text: string) => void;
-  setLoading: (text: boolean) => void;
-  setError: (text: string | null) => void;
+  setTone: (tone: GrammarTone) => void;
+  setResult: (result: GrammarCheckReslut | null) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
   reset: () => void;
 }
 
 export const useGrammarStore = create<GrammarState>((set) => ({
   inputText: '',
-  result: '',
+  tone: 'formal',
+  result: null,
   loading: false,
   error: null,
 
@@ -22,6 +26,12 @@ export const useGrammarStore = create<GrammarState>((set) => ({
     set({
       inputText: text,
     })
+  },
+
+  setTone(tone) {
+    set({
+      tone,
+    });
   },
 
   setResult(result) {
@@ -45,7 +55,8 @@ export const useGrammarStore = create<GrammarState>((set) => ({
   reset() {
     set({
       inputText: '',
-      result: '',
+      tone: 'formal',
+      result: null,
       loading: false,
       error: null
     })

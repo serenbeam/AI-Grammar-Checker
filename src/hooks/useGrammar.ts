@@ -6,6 +6,10 @@ export const useGrammar = () => {
     state => state.inputText,
   );
 
+  const  tone = useGrammarStore(
+    state => state.tone,
+  );
+
   const result = useGrammarStore(
     state => state.result,
   );
@@ -20,6 +24,10 @@ export const useGrammar = () => {
 
   const setInputText = useGrammarStore(
     state => state.setInputText,
+  );
+
+  const setTone = useGrammarStore(
+    state => state.setTone,
   );
 
   const setResult = useGrammarStore(
@@ -41,13 +49,31 @@ export const useGrammar = () => {
   const checkGrammar = async () => {
     try{
 
+      if(!inputText.trim()) {
+        setError('Please enter some text');
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
-      await grammarService.checkGrammar();
+      const response =
+      await grammarService.checkGrammar({
+        text: inputText,
+        tone
+      });
 
-    } catch(error) {
-      setError('Failed to check grammar');
+      setResult(response);
+
+    } catch(error: any) {
+      if(error?.name === 'CanceledError') {
+        return; 
+      }
+      
+      setError(
+        error?.response?.data?.message ??
+        'Failed to check grammar'
+      );
 
     } finally {
       setLoading(false);
@@ -56,11 +82,14 @@ export const useGrammar = () => {
 
   return {
     inputText,
+    tone,
     result,
     loading,
     error,
 
     setInputText,
+    setTone, 
+    setResult,
     checkGrammar,
     reset
   }

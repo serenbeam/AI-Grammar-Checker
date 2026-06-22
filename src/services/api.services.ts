@@ -1,26 +1,101 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import Config from 'react-native-config';
 class ApiService {
   private client: AxiosInstance;
-
+  private abortController: AbortController | null = null;
   constructor() {
-    this.client = axios.create();
+    console.log('config', Config.BASE_URL)
+    console.log('API KEY exists?', !!Config.OPENROUTER_API_KEY);
+    this.client = axios.create(
+      {
+        baseURL: Config.BASE_URL,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    this.setupRequestInterceptor();
+    this.setupResponseInterceptor();
   }
 
-  private setupRequestInterceptor() {}
+  private setupRequestInterceptor() {
+    this.client.interceptors.request.use(config => {
+      config.headers.Authorization =
+      `Bearer ${Config.OPENROUTER_API_KEY}`;
 
-  private setupResponseInterceptor() {}
+    config.headers['Content-Type'] =
+      'application/json';
 
-  get<T>() {}
+      return config
+    });
+  }
 
-  post<T>() {}
+  private setupResponseInterceptor() {
+    this.client.interceptors.response.use(
+      response => response,
+      error => Promise.reject(error)
+    );
+  }
 
-  put<T>() {}
+  async get<T>(
+    url: string,
+    config?: AxiosRequestConfig,
+  ): Promise<T> {
+    const response: AxiosResponse<T> =
+    await this.client.get(url, config);
 
-  delete<T>() {}
+    return response.data;
+  }
 
-  createAbortController() {}
+  async post<T>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ): Promise<T> { 
+    const response =
+    await this.client.post<T>(
+      url,
+      data,
+      {
+        signal: this.abortController?.signal,
+        ...config,
+      },
+    );
 
-  abortCurrentRequest() {}
+    return response.data;
+  }
+
+  async put<T>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ): Promise<T> { 
+    const response: AxiosResponse<T> =
+    await this.client.put(url, data, config);
+
+    return response.data;
+  }
+
+  async delete<T>(
+    url: string,
+    config?: AxiosRequestConfig,
+  ): Promise<T> { 
+    const response: AxiosResponse<T> =
+    await this.client.delete(url, config);
+
+    return response.data;
+  }
+
+  createAbortController() { 
+    this.abortController = new AbortController();
+
+    return this.abortController;
+  }
+
+  abortCurrentRequest() { 
+    this.abortController?.abort();
+  }
 
 }
 
