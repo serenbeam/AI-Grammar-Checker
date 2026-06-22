@@ -7,15 +7,34 @@ export const styles = StyleSheet.create({
         paddingHorizontal: spacing.md,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.primary,
         borderRadius: radius.lg,
     },
+
+    primaryContainer: {
+        backgroundColor: colors.primary
+    },
+
+    secondaryContainer: {
+        backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.border
+    },
+
     disabled: {
         opacity: 0.5
     },
+
     title: {
         ...typography.body,
         fontWeight: '600',
-        color: colors.white
+    },
+
+    primaryTitle: {
+        color: colors.white,
+    },
+
+    secondaryTitle: {
+        color: colors.textPrimary
     }
+
 })

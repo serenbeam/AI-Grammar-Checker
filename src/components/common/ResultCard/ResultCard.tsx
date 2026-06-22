@@ -1,8 +1,9 @@
 import { Text, View } from "react-native";
 import { styles } from "./ResultCard.styles";
+import { GrammarCheckReslut } from "@/types";
 
 interface ResultCardProps {
-  result: string;
+  result: GrammarCheckReslut;
 };
 
 export function ResultCard({
@@ -15,8 +16,22 @@ export function ResultCard({
       </Text>
 
       <Text style={styles.content}>
-        {result}
+        {result.correctedText}
       </Text>
+
+      {
+        result?.explanation && (
+          <>
+            <Text style={styles.title}>
+              Explanation
+            </Text>
+
+            <Text style={styles.content}>
+              {result.explanation}
+            </Text>
+          </>
+        )
+      }
     </View>
   );
 }

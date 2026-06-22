@@ -6,7 +6,9 @@ export function Button({
   title,
   onPress,
   disabled= false,
-  loading = false
+  loading = false,
+  variant = 'primary',
+  style,
 }: ButtonProps) {
 
   const isDIsabled = disabled || loading;
@@ -16,7 +18,14 @@ export function Button({
       activeOpacity={0.8}
       style={[
         styles.container,
-        disabled && styles.disabled
+
+        variant === 'primary'
+        ? styles.primaryContainer
+        : styles.secondaryContainer,
+
+        disabled && styles.disabled,
+        
+        style,
       ]}
       onPress={onPress}
       disabled={isDIsabled}
@@ -24,7 +33,14 @@ export function Button({
       {loading ? (
         <ActivityIndicator/>
       ): (
-        <Text style={styles.title}>
+        <Text style={[
+          styles.title,
+          
+          variant === 'primary'
+          ? styles.primaryTitle
+          : styles.secondaryTitle
+          ]}
+        >
           {title}
         </Text>
       )}

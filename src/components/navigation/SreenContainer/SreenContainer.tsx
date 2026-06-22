@@ -1,15 +1,17 @@
 import { spacing } from "@/theme";
 import { PropsWithChildren } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 
 export function ScreenContainer({
   children,
 }: PropsWithChildren) {
   return (
-    <View style={styles.container}>
-      {children}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {children}
+      </View>
+    </ScrollView>
   )
 }
 

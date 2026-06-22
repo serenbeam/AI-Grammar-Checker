@@ -16,7 +16,7 @@ export function SectionHeader({
     >
       <Text
         style={{
-          ...typography.h3,
+          ...typography.h4,
           color: colors.textPrimary
         }}
       >
