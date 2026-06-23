@@ -44,15 +44,15 @@ const CheckScreen = () => {
             onChangeText={setInputText}
           />
 
+          <ToneSelector
+            selectedTone={tone}
+            onSelectedTone={setTone}
+          />
+
           <ActionButtons
             loading={loading}
             onCheck={checkGrammar}
             onClear={reset}
-          />
-
-          <ToneSelector
-            selectedTone={tone}
-            onSelectedTone={setTone}
           />
 
           <ResultSection

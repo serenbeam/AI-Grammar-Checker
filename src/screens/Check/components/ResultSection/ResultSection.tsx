@@ -9,7 +9,7 @@ export function ResultSection({
 }: ResultSectionProps) {
 
   return (
-    <View style={{marginTop: 10}}>
+    <View>
       <SectionHeader title='Corrected Sentence' />
 
       {loading ? (

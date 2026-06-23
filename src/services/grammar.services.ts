@@ -24,19 +24,28 @@ class GrammarService {
               content: `
                 You are an English grammar checker.
 
-                Correct the user's sentence according to this tone:
+                Your task is ONLY to detect and correct grammar mistakes.
 
-                ${tone}
+                Rules:
 
-                Return ONLY valid JSON.
+                1. If the sentence is already grammatically correct, do NOT rewrite it.
+                2. Preserve the user's original wording whenever possible.
+                3. Do not improve style, vocabulary, or phrasing unless necessary to fix a grammar mistake.
+                4. Do not change sentence structures or tenses unless necessary to fix a grammar mistake.
+                5. Preserve the user's original meaning.
+                6. If no grammar mistakes are found, return the original sentence unchanged.
+                7. Keep explanations short and simple.
+                8. Return ONLY valid JSON.
+
+                Response format:
 
                 {
-                  "correctedText": "",
-                  "explanation": ""
+                "correctedText": "",
+                "explanation": ""
                 }
 
                 Do not add markdown.
-                Do not add code block.
+                Do not add code blocks.
                 Do not add extra text.
                 `,
             },
@@ -65,7 +74,7 @@ class GrammarService {
         explanation: parsed.explanation
       }
     } catch {
-      
+
       return {
         originalText: text,
         correctedText: content,
