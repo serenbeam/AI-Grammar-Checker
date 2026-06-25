@@ -1,5 +1,6 @@
 import { grammarService } from "@/services";
 import { useGrammarStore } from "@/store";
+import { useHistory } from "./useHistory";
 
 export const useGrammar = () => {
   const inputText = useGrammarStore(
@@ -46,6 +47,8 @@ export const useGrammar = () => {
     state => state.reset,
   );
 
+  const {addHistory} = useHistory();
+
   const checkGrammar = async () => {
     try{
 
@@ -64,6 +67,13 @@ export const useGrammar = () => {
       });
 
       setResult(response);
+
+      await addHistory({
+        id: Date.now().toString(),
+        originalText: response.originalText,
+        correctedText: response.correctedText,
+        createdAt: new Date().toISOString(),
+      });
 
     } catch(error: any) {
       if(error?.name === 'CanceledError') {
