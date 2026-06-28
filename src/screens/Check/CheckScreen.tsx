@@ -28,7 +28,7 @@ const CheckScreen = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.contentContainer}><View style={styles.header}>
           <View style={styles.wrapperTitle}>
-            <Text style={styles.colorTitle}>AI O</Text>
+            <Text style={styles.colorTitle}>O'</Text>
           <Text style={styles.title}>
             Grammar Checker
           </Text>
@@ -44,10 +44,10 @@ const CheckScreen = () => {
             onChangeText={setInputText}
           />
 
-          <ToneSelector
+          {/* <ToneSelector
             selectedTone={tone}
             onSelectedTone={setTone}
-          />
+          /> */}
 
           <ActionButtons
             loading={loading}
