@@ -1,17 +1,18 @@
+import { ThemeMode } from '@/types';
 import { create } from 'zustand';
 
 interface SettingsState {
-  darkMode: boolean;
+  theme: ThemeMode;
 
-  setDarkMode: (value: boolean) => void;
+  setTheme: (theme: ThemeMode) => void;
 }
 
 export const useSettingsStore = create<SettingsState>((set) => ({
-  darkMode: false,
+  theme: 'system',
 
-  setDarkMode(value) {
+  setTheme(theme) {
     set({
-      darkMode: value
+      theme,
     })
   },
 }))

@@ -1,16 +1,16 @@
 import { useSettingsStore } from "@/store"
 
 export const useTheme = () => {
-  const darkMode = useSettingsStore(
-    state => state.setDarkMode,
+  const theme = useSettingsStore(
+    state => state.theme,
   );
 
-  const setDarkMode = useSettingsStore(
-    state => state.setDarkMode,
+  const setTheme = useSettingsStore(
+    state => state.setTheme,
   );
 
   return {
-    darkMode,
-    setDarkMode
+    theme,
+    setTheme
   }
 }
