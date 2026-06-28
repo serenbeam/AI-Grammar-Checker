@@ -1,23 +1,34 @@
 import { View, Text } from 'react-native';
 import React from 'react';
+
 import { styles } from './HistoryCard.styles';
-import { CircleCheck } from 'lucide-react-native';
-import { colors } from '@/theme';
 import { HistoryItem } from '@/types';
+
 interface HistoryCardProps {
   item: HistoryItem;
 }
 
 export function HistoryCard({
-  item
+  item,
 }: HistoryCardProps) {
+  const formattedDate = new Date(
+    item.createdAt,
+  ).toLocaleString(
+    'en-US',
+    {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    },
+  );
+
   return (
     <View style={styles.card}>
-      <View style={styles.iconContainer}>
-        <CircleCheck
-          size={20}
-          color={colors.success}
-        />
+      <View style={styles.header}>
+        <Text style={styles.dateText}>
+          {formattedDate}
+        </Text>
       </View>
 
       <View style={styles.content}>
@@ -25,7 +36,7 @@ export function HistoryCard({
           Original
         </Text>
 
-        <Text 
+        <Text
           style={styles.originalText}
           numberOfLines={2}
         >
@@ -36,17 +47,13 @@ export function HistoryCard({
           Corrected
         </Text>
 
-        <Text 
-          style={styles.originalText}
+        <Text
+          style={styles.correctedText}
           numberOfLines={2}
         >
           {item.correctedText}
         </Text>
-
-        <Text style={styles.dateText}>
-          {item?.createdAt}
-        </Text>
       </View>
     </View>
   );
-};
+}

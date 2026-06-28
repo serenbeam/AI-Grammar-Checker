@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    ...typography.h3,
+    ...typography.h2,
     color: colors.textPrimary,
     textAlign: 'center',
     marginVertical: spacing.xl
