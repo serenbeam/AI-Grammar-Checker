@@ -1,5 +1,11 @@
-import { HistoryItem } from "@/types";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HistoryItem } from '@/types';
 import { create } from 'zustand';
+import {
+  persist,
+  createJSONStorage,
+} from 'zustand/middleware';
+
 interface HistoryState {
   histories: HistoryItem[];
 
@@ -8,26 +14,37 @@ interface HistoryState {
   clearHistory: () => void;
 }
 
-export const useHistoryStore = create<HistoryState>((set) => ({
-  histories: [],
-
-  addHistory(item) {
-    set((state) => ({
-      histories: [item, ...state.histories],
-    }))
-  },
-
-  removeHistory(id) {
-    set((state) => ({
-      histories: state.histories.filter(
-        (item) => item.id !== id
-      )
-    }))
-  },
-
-  clearHistory() {
-    set({
+export const useHistoryStore = create<HistoryState>()(
+  persist(
+    (set) => ({
       histories: [],
-    })
-  },
-}))
+
+      addHistory(item) {
+        set((state) => ({
+          histories: [item, ...state.histories],
+        }));
+      },
+
+      removeHistory(id) {
+        set((state) => ({
+          histories: state.histories.filter(
+            (item) => item.id !== id,
+          ),
+        }));
+      },
+
+      clearHistory() {
+        set({
+          histories: [],
+        });
+      },
+    }),
+    {
+      name: 'history-storage',
+
+      storage: createJSONStorage(
+        () => AsyncStorage,
+      ),
+    },
+  ),
+);
