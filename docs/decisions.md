@@ -126,6 +126,94 @@ This decision should be revisited if:
 
 ---
 
+## Request Cancellation Strategy
+
+### Decision
+
+Cancel any active grammar request before sending a new request.
+
+### Reasoning
+
+- Prevent race conditions.
+- Ensure only the latest request updates the application state.
+- Reduce unnecessary API usage and costs.
+- Improve responsiveness during rapid user interactions.
+
+### Implementation
+
+The application uses `AbortController` together with Axios request signals.
+
+Current flow:
+
+```text
+New Request Started
+    ↓
+Abort Previous Request
+    ↓
+Create New AbortController
+    ↓
+Send New Request
+    ↓
+Ignore CanceledError
+
+```
+
+Alternatives Considered
+Allow multiple concurrent requests.
+Queue requests sequentially.
+Re-evaluation Trigger
+
+This decision should be revisited if:
+
+Batch processing is introduced.
+Background processing becomes necessary.
+Multiple simultaneous AI requests become a requirement.
+
+---
+
+## Response Parsing Strategy
+
+### Decision
+
+Require the AI model to return structured JSON responses.
+
+### Reasoning
+
+- Simplifies response parsing.
+- Provides predictable response structures.
+- Reduces UI complexity.
+- Simplifies future model replacement.
+
+### Implementation
+
+The AI model is instructed to return responses in the following format:
+
+```json
+{
+  "correctedText": "",
+  "explanation": ""
+}
+
+```
+
+The application attempts to parse the response as JSON.
+
+If parsing fails, the raw response content is returned as the corrected text to avoid complete request failure.
+
+Alternatives Considered
+Free-form text parsing.
+Regex extraction.
+XML responses.
+Re-evaluation Trigger
+
+This decision should be revisited if:
+
+Multiple output formats become necessary.
+Additional AI providers introduce incompatible formats.
+Structured output support changes significantly.
+
+---
+
 ## Navigation Strategy
 
 ### Decision
@@ -211,8 +299,8 @@ The following decisions have been intentionally postponed to future phases.
 | Theme Switching | Deferred to Phase 2 |
 | iOS Support | Deferred |
 | Automated Testing | Deferred |
-| CI Integration | Deferred |
-| TanStack Query | Deferred |
+| Continuous Integration | Deferred |
+| TanStack Query Integration | Deferred |
 
 These features are not rejected. They have simply been deferred until they provide clear value to the project.
 
